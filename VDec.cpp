@@ -14,14 +14,17 @@ class VDec				// wektor decyzyjny
 		VDec();
 		VDec(int X, int Y, int Z);
 		~VDec();
+		friend class board;
 		void Wyswietl();
 		int ObliczKoszt();
 		void CzytajPlik();
+		void updateVDec();
 };
 
 VDec(int X, int Y, int Z)
 {
 	int*** Dec;
+	N = 0;					// numer ruchu zawsze na poczatku 0
 	Dec = new int **[Z]; 	// X,Y,E
 	for(int i=0; i<Z; i++) 	// najpierw warstwa
 	{
@@ -38,12 +41,12 @@ VDec(int X, int Y, int Z)
 				Dec[i][j][k] = 0; // inicjalizacja
 }
 
-VDec()
+~VDec()
 {
 	delete[] Dec;
 }
 
-int ObliczKoszt()
+int VDec::ObliczKoszt()
 {
 	T = 0;
 	for(int z=0; z<Z, z++)
@@ -51,13 +54,21 @@ int ObliczKoszt()
 			T += Dec[z][H-1][i]; // T = suma E
 }
 
-void Wyswietl()
+void VDec::Wyswietl()
 {
 	for(int i=0; i<Z; i++)
 		for(int j=0; j<H; j++)
 			for(int k=0; k<X*Y; k++)
 				std::cout << Dec[i][j][k] = 0; // inicjalizacja
 }
+
+void VDec::updateVDec()
+{	// poziom 0 - X, poziom 1 - Y, poziom 2 - E
+	Dec[Rozw1.curZ][0][N] = curX;		// bardzo nieeleganckie odwolanie do konkretnego obiektu innej klasy, zamienic na przeslanie przez referencje
+	Dec[Rozw1.curZ][1][N] = curY;
+	N++;
+}
+
 
 int main(void)
 {
