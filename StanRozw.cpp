@@ -21,7 +21,7 @@ class board {
 	int X,Y,Z;
 	public:
 		int curX, curY, curZ;
-		point ***array = new point**[Z]; // Tablica numerowana [Z][Y][X]
+		point ***array; // Tablica numerowana [Z][Y][X]
 		board(int,int,int);
 		friend class VDec;
 		void display();
@@ -30,7 +30,7 @@ class board {
 		void algoGreedy(int xStart, int yStart, int zStart, VDec &);
 		void updateVDec();
 		void traceRouteFromVDec(VDec &Dec);
-		//~board();
+		~board();
 	protected:
 
 };
@@ -100,25 +100,16 @@ board::board(int a, int b, int c){
 	Y = b;
 	Z = a;
 	int i,j;
+	array = new point**[Z];
 	for(i = 0;i<Z;i++){
-		array[i] = new point*[X]; // tutaj bedzie X czy Y? pisze metode tak jak mowiles, [Z][Y][X]
-		for(j = 0;j<X;j++)	array[i][j] = new point[Y];
+		array[i] = new point*[Y]; 
+		for(j = 0;j<Y;j++)	array[i][j] = new point[X];
 	};
 };
 	
-/*board::~board(){
-	int i,j;
-	for (int i=0;i<X;i++)
-          {
-                  for (int j=0;j<Z;j++)
-                  {
-                          delete []array[i][j];
-                  }
-                  delete []array[i];
-          }
+board::~board(){
           delete []array;
-
-}*/
+}
 
 void board::algoGreedy(int xStart, int yStart, int zStart, VDec &Dec1) // mozna przyjac xStart = curX
 {
@@ -159,7 +150,7 @@ void board::algoGreedy(int xStart, int yStart, int zStart, VDec &Dec1) // mozna 
 			droga_kierunek[3]++;
 		else break;
 	}
-	// Znalezienie najdluzszej drogi z obecnego miejsca - Sortowanie przez wyb�r
+	// Znalezienie najdluzszej drogi z obecnego miejsca - Sortowanie przez wybór
 	max = droga_kierunek[0];
 	for (i = 1; i < 4; i++)
 		if (droga_kierunek[i]>max)
@@ -260,6 +251,38 @@ void board::traceRouteFromVDec(VDec &Dec1)
 	//Dec.curZ
 }
 
+class tabu {
+    int size;
+    public:
+    int **tabu_array;// Ma trzy wiersze o długości size(parametr optymalizacyjny), 0-X,1-Y,3-Z, przy sprawdzaniu ruchów na liście tabu będziemy brali uwagę co dwie sąsiednie pozycje
+    tabu(int);
+    ~tabu();
+    void display();
+    friend class board;
+};
+
+void tabu::display(){
+    int i,j;
+    for(i=0;i<3;i++){
+        cout<<endl;
+        for(j=0;j<size;j++)
+            cout<<tabu_array[i][j];
+    }
+}
+
+tabu::tabu(int X){
+    int i,j;
+    size = X;
+    tabu_array = new int*[3];
+    for(i=0;i<3;i++) tabu_array[i] = new int[X];
+    for(i=0;i<3;i++) // początkowo wypełniamy zerami
+        for(j=0;j<size;j++)
+            tabu_array[i][j]=0;
+}
+
+tabu::~tabu(){
+    delete[] tabu_array;
+}
 int main(int argc, char** argv)
 {
 	// trzeba zainicjowac VDec
