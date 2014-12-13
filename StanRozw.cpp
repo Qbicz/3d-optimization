@@ -2,8 +2,8 @@
 using namespace std;
 
 class point {
-	float delay;
-	int X,Y,Z;
+		float delay;
+		int X,Y,Z;
 	public:
 		char state;
 		friend class board;
@@ -27,7 +27,7 @@ class board {
 		void updateVDec();
 		void traceRouteFromVDec(VDec &Dec);
 		friend class VDec;
-		//~board();
+		~board();
 	protected:
 
 };
@@ -45,46 +45,62 @@ void board::display(){
 }
 
 void board::moveX(int X0, int X1){
-	int x;
+	int x, counter = 0;
 	if (X0 < X1)
 		for(x = X0; x<=X1; x++){
 			curX = x;
-			if(array[curZ][curY][curX].state == '1')
+			if(array[curZ][curY][curX].state == '1'){
 				array[curZ][curY][curX].state = 'X';
-			else if(array[curZ][curY][curX].state == '0')
+				counter=counter+2
+			}
+			else if(array[curZ][curY][curX].state == '0'){
 				array[curZ][curY][curX].state = ' ';
+				counter++;
+			}
 			curX = X1; // info dla tworzonego wektora decyzyjnego
 		}
 	else
 		for (x = X1; x>=X0; x--){
 			curX = x;
-			if(array[curZ][curY][curX].state == '1')
+			if(array[curZ][curY][curX].state == '1'){
 				array[curZ][curY][curX].state = 'X';
-			else if(array[curZ][curY][curX].state == '0')
+				counter=counter+2
+			}
+			else if(array[curZ][curY][curX].state == '0'){
 				array[curZ][curY][curX].state = ' ';
+				counter++;
+			}
 			curX = X0;
 		}
 	
 }
 
 void board::moveY(int Y0, int Y1){
-	int y;
+	int y,counter = 0;
 	if (Y0 < Y1)
 		for(y = Y0; y<=Y1; y++){
 			curY = y;
-			if(array[curZ][curY][curX].state == '1')
+			if(array[curZ][curY][curX].state == '1'){
 				array[curZ][curY][curX].state = 'X';
-			else if(array[curZ][curY][curX].state == '0')
+				counter=counter+2
+			}
+			else if(array[curZ][curY][curX].state == '0'){
 				array[curZ][curY][curX].state = ' ';
+				counter++;
+			}
 			curY = Y1; // info dla tworzonego wektora decyzyjnego
 		}
 	else 
 		for (y = Y1; y>=Y0; y--){
 			curY = y;
-			if(array[curZ][curY][curX].state == '1')
+			if(array[curZ][curY][curX].state == '1'){
 				array[curZ][curY][curX].state = 'X';
-			else if(array[curZ][curY][curX].state == '0')
+				counter=counter+2
+			}
+			else if(array[curZ][curY][curX].state == '0'){
 				array[curZ][curY][curX].state = ' ';
+				counter++;
+			}
 			curY = Y0;
 		};	
 }
@@ -104,19 +120,9 @@ board::board(int a, int b, int c){
 	};
 };
 	
-/*board::~board(){
-	int i,j;
-	for (int i=0;i<X;i++)
-          {
-                  for (int j=0;j<Z;j++)
-                  {
-                          delete []array[i][j];
-                  }
-                  delete []array[i];
-          }
+board::~board(){
           delete []array;
-
-}*/
+}
 
 void board::algoGreedy(xStart, yStart, zStart) // mozna przyjac xStart = curX
 {
@@ -248,6 +254,7 @@ class tabu {
     tabu(int);
     ~tabu();
     void display();
+    void updatetabu(Vdec &);
     friend class board;
 };
 void tabu::display(){
