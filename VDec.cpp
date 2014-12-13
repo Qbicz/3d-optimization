@@ -24,7 +24,39 @@ class VDec				// wektor decyzyjny
 		void CzytajPlik();
 		void updateVDec(board &Rozw1);
 		void simplifyVDec();		// zamienia ruchy zlozone na sume ruchow prostych
+		void swap(int, int, int); // nasz pierwszy RUCH!
+		int FunctionValue(board); // funkcja celu, robie bez referencji żeby działać na kopii, a nie na oryginale
 };
+
+void VDec::swap(int A, int B, int Z){ //A,B-numery kolumn, Z-numer warstwy, w której zmieniamy
+	int a,b; //pomocnicze
+	a = Dec[Z][0][A];
+	b = Dec[Z][1][A];
+	Dec[Z][0][A] = Dec[Z][0][B];
+	Dec[Z][1][A] = Dec[Z][1][B];
+	Dec[Z][0][B] = a;
+	Dec[Z][1][B] = b;
+}
+
+int VDec::FunctionValue(board Pattern){ // Wartość funkcji celu :)
+	int i;
+	bool prev,flag = true; // true-poziomo, false-pionowo
+	if(Dec[Z][0][0]==Dec[Z][0][1]) prev = false;
+	else prev = true;
+	for(i=0;i<N-1;i++){
+		if(Dec[Z][0][i]==Dec[Z][0][i+1]){
+			Pattern.movey(Dec[Z][1][i],Dec[Z][1][i+1]);
+			flag = false;
+		}
+		else{ 
+			Pattern.movex(Dec[Z][0][i],Dec[Z][0][i+1]);
+			flag = true;
+		}
+		if(prev!=flag) Pattern.counter++;
+		prev = flag;
+	}
+	return Pattern.counter;
+}
 
 VDec::VDec(int X, int Y, int Z)
 {
