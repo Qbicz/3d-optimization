@@ -18,7 +18,7 @@ class board {
 	int X,Y,Z;
 	public:
 		int curX, curY, curZ;
-		point ***array = new point**[Z]; // Tablica numerowana [Z][Y][X]
+		point ***array; // Tablica numerowana [Z][Y][X]
 		void display();
 		board(int,int,int);
 		void moveX(int, int);
@@ -97,9 +97,10 @@ board::board(int a, int b, int c){
 	Y = b;
 	Z = a;
 	int i,j;
+	array = new point**[Z]
 	for(i = 0;i<Z;i++){
-		array[i] = new point*[X]; // tutaj bedzie X czy Y? pisze metode tak jak mowiles, [Z][Y][X]
-		for(j = 0;j<X;j++)	array[i][j] = new point[Y];
+		array[i] = new point*[Y]; // tutaj bedzie X czy Y? pisze metode tak jak mowiles, [Z][Y][X]
+		for(j = 0;j<Y;j++)	array[i][j] = new point[X];
 	};
 };
 	
@@ -158,7 +159,7 @@ void board::algoGreedy(xStart, yStart, zStart) // mozna przyjac xStart = curX
 			droga_kierunek[3]++;
 		else break;
 	}
-	// Znalezienie najdluzszej drogi z obecnego miejsca - Sortowanie przez wybór
+	// Znalezienie najdluzszej drogi z obecnego miejsca - Sortowanie przez wybÃ³r
 	max = droga_kierunek[0];
 	for (i = 1; i < 4; i++)
 		if (droga_kierunek[i]>max)
