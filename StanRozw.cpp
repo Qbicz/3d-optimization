@@ -241,6 +241,36 @@ void traceRouteFromVDec(VDec &Dec)
 	Dec.curZ
 }
 
+class tabu {
+    int size;
+    public:
+    int **tabu_array;// Ma trzy wiersze o długości size(parametr optymalizacyjny), 0-X,1-Y,3-Z, przy sprawdzaniu ruchów na liście tabu będziemy brali uwagę co dwie sąsiednie pozycje
+    tabu(int);
+    ~tabu();
+    void display();
+    friend class board;
+};
+void tabu::display(){
+    int i,j;
+    for(i=0;i<3;i++){
+        cout<<endl;
+        for(j=0;j<size;j++)
+            cout<<tabu_array[i][j];
+    }
+}
+tabu::~tabu(){
+	delete[] tabu_array;
+}
+tabu::tabu(int X){
+    int i,j;
+    size = X;
+    tabu_array = new int*[3];
+    for(i=0;i<3;i++) tabu_array[i] = new int[X];
+    for(i=0;i<3;i++) // początkowo wypełniamy zerami
+        for(j=0;j<size;j++)
+            tabu_array[i][j]=0;
+}
+
 int main(int argc, char** argv) {
 	// trzeba zainicjowac VDec
 	board cos(1,50,50);
