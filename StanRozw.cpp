@@ -17,6 +17,7 @@ class board {
 
 	int X,Y,Z;
 	public:
+		int counter; // do funkcji celu
 		int curX, curY, curZ;
 		point ***array; // Tablica numerowana [Z][Y][X]
 		void display();
@@ -45,7 +46,7 @@ void board::display(){
 }
 
 void board::moveX(int X0, int X1){
-	int x, counter = 0;
+	int x;
 	if (X0 < X1)
 		for(x = X0; x<=X1; x++){
 			curX = x;
@@ -112,6 +113,7 @@ board::board(int a, int b, int c){
 	X = c;
 	Y = b;
 	Z = a;
+	counter = 0;
 	int i,j;
 	array = new point**[Z]
 	for(i = 0;i<Z;i++){
