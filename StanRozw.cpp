@@ -30,10 +30,22 @@ class board {
 		void algoGreedy(int xStart, int yStart, int zStart, VDec &);
 		void updateVDec();
 		void traceRouteFromVDec(VDec &Dec);
+		bool stop();
 		~board();
 	protected:
 
 };
+bool board::stop(){
+	int sizex, sizey, sizez;
+	int counter = 0;
+	for(sizez=0;sizez<Z;sizez++)
+		for(sizey=0;sizey<Y;sizey++)
+			for(sizex=0;sizex<X;sizex++)
+				if (array[sizez][sizey][sizex].state == '1')
+					counter++;
+	if(counter == 0) return true;
+	else return false;
+}
 
 void board::display(){
 	int sizex, sizey, sizez;
