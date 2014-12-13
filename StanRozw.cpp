@@ -1,4 +1,7 @@
 #include <iostream>
+//#include "stdafx.h" // tylko dla Visual Studio
+#include "VDec.cpp"
+
 using namespace std;
 
 class point {
@@ -19,14 +22,14 @@ class board {
 	public:
 		int curX, curY, curZ;
 		point ***array = new point**[Z]; // Tablica numerowana [Z][Y][X]
-		void display();
 		board(int,int,int);
+		friend class VDec;
+		void display();
 		void moveX(int, int);
 		void moveY(int, int);
-		void algoGreedy(int xStart, int yStart, int zStart);
+		void algoGreedy(int xStart, int yStart, int zStart, VDec &);
 		void updateVDec();
 		void traceRouteFromVDec(VDec &Dec);
-		friend class VDec;
 		//~board();
 	protected:
 
@@ -117,11 +120,9 @@ board::board(int a, int b, int c){
 
 }*/
 
-void board::algoGreedy(xStart, yStart, zStart) // mozna przyjac xStart = curX
+void board::algoGreedy(int xStart, int yStart, int zStart, VDec &Dec1) // mozna przyjac xStart = curX
 {
-	//bool board[X][Y]; //statycznie, nie bedzie czesto alokowana
 	int x, y, z, i, j, max, tmp, ruch;
-	int xStart = 0, yStart = 0;
 	int droga_kierunek[4];
 
 	x = xStart; // punkt startowy na warstwie
@@ -133,28 +134,28 @@ void board::algoGreedy(xStart, yStart, zStart) // mozna przyjac xStart = curX
 	// --- Znalezienie kierunku ---
 	for (i = x + 1; i < X; i++)
 	{	// sprawdzenie w dol
-		if (array[z][y][i] == 0)
+		if (array[z][y][i].state == '1')	// jesli 0 to rzeczywiscie nie wypelnione miejsce
 			droga_kierunek[0]++;
 		else break;
 	}
 
 	for (j = y + 1; j < X; j++)
 	{	// sprawdzenie w prawo
-		if (array[z][j][x] == 0)
+		if (array[z][j][x].state == '1')
 			droga_kierunek[1]++;
 		else break;
 	}
 
 	for (i = x - 1; i >= 0; i--)
 	{	// sprawdzenie w gore
-		if (array[z][y][i] == 0)
+		if (array[z][y][i].state == '1')
 			droga_kierunek[2]++;
 		else break;
 	}
 
 	for (j = y - 1; j >= 0; j--)
 	{	// sprawdzenie w lewo
-		if (array[z][j][x] == 0)
+		if (array[z][j][x].state == '1')
 			droga_kierunek[3]++;
 		else break;
 	}
@@ -182,7 +183,7 @@ void board::algoGreedy(xStart, yStart, zStart) // mozna przyjac xStart = curX
 		moveY(y, y - max);
 	}
 
-	Dec1.updateVDec();	// bardzo nieeleganckie odwolanie do konkretnego obiektu innej klasy, zamienic na przeslanie przez referencje
+	Dec1.updateVDec(*this);	// DONE::bardzo nieeleganckie odwolanie do konkretnego obiektu innej klasy, zamienic na przeslanie przez referencje
 
 	//switch (ruch)
 	//{
@@ -228,19 +229,39 @@ void board::algoGreedy(xStart, yStart, zStart) // mozna przyjac xStart = curX
 
 } // koniec algoGreedy
 
-void traceRouteFromVDec(VDec &Dec)
+void board::traceRouteFromVDec(VDec &Dec1)
 {
-	for (int i = 1; i < Dec.N; i++)
+	for (int i = 1; i < Dec1.N; i++)
 	{
-		if (Dec[curZ][0][i] != Dec[curZ][0][i - 1]
-			&& Dec[curZ][1][i] != Dec[curZ][1][i - 1])	// curZ czyli this.curZ (board.curZ)
-		{	// wykryto ruch ukosny (zlozony)
+		int startX = Dec1.Dec[curZ][0][i - 1];
+		int stopX = Dec1.Dec[curZ][0][i];
+		int startY = Dec1.Dec[curZ][1][i - 1];
+		int stopY = Dec1.Dec[curZ][1][i];
 
+		if (startX != stopX)	// curZ czyli this.curZ (board.curZ)
+		{
+			if (startY != stopY)
+			{	// wykryto ruch ukosny (zlozony) -> powinno to zostac rozwiazane przez VDec::simplifyVDec()
+				// kod ostrzegajacy o bledzie
+			}
+			else
+			{	// ruch po X
+				moveX(startX, stopX);
+			}
 		}
-	Dec.curZ
+		else // (startX == stopX)
+		{
+			if (startY != stopY)
+			{	// ruch po Y
+				moveY(startY, stopY);
+			}
+		}
+
+	//Dec.curZ
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
 	// trzeba zainicjowac VDec
 	board cos(1,50,50);
 	cos.array[0][0][10].state = '1';
