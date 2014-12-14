@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "board.h"
 #include <iostream>
+#include <cstdlib>	// dla funkcji int abs(int n)
 using namespace std;
 
 bool board::stop(){
@@ -171,6 +172,10 @@ void board::algoGreedy(int xStart, int yStart, int zStart, VDec &Dec1) // mozna 
 	// -> sprawdz cala tablice w poszukiwaniu luk
 	// -> przeskocz do punktu (najblizszego/pierwszego)
 	// -> rozpocznij algorytm zachlanny od nowego xStart,yStart
+	for (i = 0; i < X; i++)
+		for (j = 0; j < Y; j++)
+			if (array[curZ][j][i].state == '1')
+				jump(i, j, Dec1); // !!! po przeskoku zacznij od nowa algoGreedy, trzeba umiescic calosc w jeszcze jednej petli
 
 } // koniec algoGreedy
 
@@ -204,4 +209,13 @@ void board::traceRouteFromVDec(VDec &Dec1)
 
 		//Dec.curZ
 	}
+}
+
+void board::jump(int x, int y, VDec &Dec1)
+{	
+	int koszt = abs(x - curX) + abs(y - curY);
+	Dec1.T += koszt; // zwiekszenie funkcji celu
+	// jesli wolisz liczyc inaczej to po prostu suma przeskokow board::int jumps+= koszt; i bedzie sie to dodawac w VDec::FunctionValue
+	curX = x;
+	curY = y;
 }

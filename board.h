@@ -32,7 +32,7 @@ public:
 	void updateVDec();
 	void traceRouteFromVDec(VDec &Dec);
 	bool stop();
-	void jump(int x, int y);
+	void jump(int x, int y, VDec &Dec1);
 protected:
 
 };
