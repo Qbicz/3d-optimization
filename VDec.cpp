@@ -5,8 +5,11 @@
 #include "stdafx.h" // tylko dla Visual Studio
 #include "VDec.h"
 
-VDec::VDec(int X, int Y, int Z)
+VDec::VDec(int X0, int Y0, int Z0)
 {
+	X = X0;
+	Y = Y0;
+	Z = Z0;
 	int*** Dec;
 	N = 0;					// numer ruchu zawsze na poczatku 0
 	Dec = new int **[Z]; 	// X,Y,E
@@ -15,7 +18,7 @@ VDec::VDec(int X, int Y, int Z)
 		Dec[i] = new int *[H]; // "szerokosc"
 		for(int j=0; j<H; j++)
 		{
-			Dec[i][j] = new int [X*Y]; // "dlugosc"
+			Dec[i][j] = new int [10*(X+Y)]; // "dlugosc"
 		}
 	}
 	// w przyszlosci lap std::bad_alloc
@@ -27,13 +30,8 @@ VDec::VDec(int X, int Y, int Z)
 	for(int i=0; i<Z; i++)
 		for(int j=0; j<H; j++)
 			for(int k=0; k<max; k++)
-				Dec[i][j][k] = 0; // inicjalizacja
+				Dec[i][j][k] = -1; // inicjalizacja
 }
-
-//VDec::VDec(VDec &original) // konstruktor kopiujacy
-//{
-//	// dodatkowe max(X,Y) kolumn
-//}
 
 VDec::~VDec()
 {
@@ -44,7 +42,7 @@ int VDec::ObliczKoszt()			// obecnie tylko koszt ruchow 'lejacych'
 {
 	T = 0;
 	for (int z = 0; z < Z; z++)
-		for (int i = 0; i < X*Y; i++)
+		for (int i = 0; i < 10*(X+Y); i++)
 			T += Dec[z][H-1][i]; // T = suma E
 	return T;
 }
@@ -81,18 +79,28 @@ void VDec::simplifyVDec(board &Rozw1)
 	}
 }
 
-void VDec::swap(int A, int B, int Z){ //A,B-numery kolumn, Z-numer warstwy, w której zmieniamy
-	int a, b; //pomocnicze
-	a = Dec[Z][0][A];
-	b = Dec[Z][1][A];
-	Dec[Z][0][A] = Dec[Z][0][B];
-	Dec[Z][1][A] = Dec[Z][1][B];
-	Dec[Z][0][B] = a;
-	Dec[Z][1][B] = b;
+void VDec::swap(int A, int B, int Z0, tabu &lista){ //A,B-numery kolumn, Z-numer warstwy, w ktÃ³rej zmieniamy
+	int i, a, b; //pomocnicze
+	bool flag = true;
+	for(i = 0; lista[Z0][0][i+1] = -1; i++)
+		if(lista[Z0][0][i] == Dec[Z0][0][A] 
+		&& lista[Z0][1][i] == Dec[Z0][0][B] 
+		&& lista[Z0][2][i] == Dec[Z0][1][A] 
+		&& lista[Z0][3][i] == Dec[Z0][1][B])
+			flag = false;
+	if(flag){
+		a = Dec[Z][0][A];
+		b = Dec[Z][1][A];
+		Dec[Z][0][A] = Dec[Z][0][B];
+		Dec[Z][1][A] = Dec[Z][1][B];
+		Dec[Z][0][B] = a;
+		Dec[Z][1][B] = b;
+	}
 }
 
-int VDec::FunctionValue(board Pattern){ // Wartoœæ funkcji celu :)
+int VDec::FunctionValue(board Pattern){ // WartoÅ“Ã¦ funkcji celu :)
 	int i;
+	Pattern.counter = 0;
 	bool prev, flag = true; // true-poziomo, false-pionowo
 	if (Dec[Z][0][0] == Dec[Z][0][1]) prev = false;
 	else prev = true;
@@ -112,11 +120,7 @@ int VDec::FunctionValue(board Pattern){ // Wartoœæ funkcji celu :)
 }
 
 
-//int main(void)
-//{
-//	// <czyta dane z pliku>
-//	VDec Dec1;
-//	Dec1.Wyswietl();
-//}
+
+
 
 
