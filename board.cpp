@@ -6,13 +6,13 @@ using namespace std;
 
 bool board::stop(){
 	int sizex, sizey, sizez;
-	int counter = 0;
+	int counterek = 0;
 	for (sizez = 0; sizez<Z; sizez++)
 		for (sizey = 0; sizey<Y; sizey++)
 			for (sizex = 0; sizex<X; sizex++)
 				if (array[sizez][sizey][sizex].state == '1')
-					counter++;
-	if (counter == 0) return true;
+					counterek++;
+	if (counterek == 0) return true;
 	else return false;
 }
 
@@ -135,7 +135,7 @@ void board::algoGreedy(int xStart, int yStart, int zStart, VDec &Dec1) // mozna 
 				droga_kierunek[3]++;
 			else break;
 		}
-		// Znalezienie najdluzszej drogi z obecnego miejsca - Sortowanie przez wybór
+		// Znalezienie najdluzszej drogi z obecnego miejsca - Sortowanie przez wybÃ³r
 		max = droga_kierunek[0];
 		for (i = 1; i < 4; i++)
 			if (droga_kierunek[i]>max)
