@@ -13,7 +13,7 @@ private:
 	int T;			// koszt - sumaryczny czas (ilosc iteracji)
 public:
 	VDec();
-	VDec(int X, int Y, int Z);
+	VDec(int X0, int Y0, int Z0);
 	VDec(VDec &original);		// kiedy wektor sie powieksza, trzeba alokowac wiecej pamieci
 	~VDec();
 	friend class board;
@@ -22,8 +22,8 @@ public:
 	void CzytajPlik();
 	void updateVDec(board &Rozw1);
 	void simplifyVDec(board &Rozw1);	// zamienia ruchy zlozone na sume ruchow prostych
-	void swap(int, int, int); // nasz pierwszy RUCH!
-	int FunctionValue(board); // funkcja celu, robie bez referencji ¿eby dzia³aæ na kopii, a nie na oryginale
+	void swap(int, int, int, tabu& lista); // nasz pierwszy RUCH!
+	int FunctionValue(board); // funkcja celu, robie bez referencji Å¼eby dziaÅ‚aÄ‡ na kopii, a nie na oryginale
 };
 
 #endif VDEC_H_
