@@ -3,14 +3,13 @@
 #define TABU_H_
 
 class tabu {
-	int size, Z; //Z-warstwa
+	int size;
 public:
-	int ***tabu_array;
+	int **tabu_array;// Ma trzy wiersze o d³ugoœci size(parametr optymalizacyjny), 0-X,1-Y,3-Z, przy sprawdzaniu ruchów na liœcie tabu bêdziemy brali uwagê co dwie s¹siednie pozycje
 	tabu(int);
 	~tabu();
 	void display();
 	friend class board;
-	void updatetabu(int X0, int X1, int Y0, int Y1);
 };
 
 #endif
