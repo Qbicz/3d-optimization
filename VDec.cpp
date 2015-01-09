@@ -100,6 +100,7 @@ void VDec::swap(int A, int B, int Z0, tabu &lista){ //A,B-numery kolumn, Z-numer
 
 int VDec::FunctionValue(board Pattern){ // Wartoœæ funkcji celu :)
 	int i;
+	Pattern.counter = 0;
 	bool prev, flag = true; // true-poziomo, false-pionowo
 	if (Dec[Z][0][0] == Dec[Z][0][1]) prev = false;
 	else prev = true;
