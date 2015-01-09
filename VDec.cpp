@@ -87,7 +87,7 @@ void VDec::swap(int A, int B, int Z0, tabu &lista){ //A,B-numery kolumn, Z-numer
 		&& lista[Z0][1][i] == Dec[Z0][0][B] 
 		&& lista[Z0][2][i] == Dec[Z0][1][A] 
 		&& lista[Z0][3][i] == Dec[Z0][1][B])
-		flag = false;
+			flag = false;
 	if(flag){
 		a = Dec[Z][0][A];
 		b = Dec[Z][1][A];
