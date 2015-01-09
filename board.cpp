@@ -33,19 +33,27 @@ void board::moveX(int X0, int X1){
 	if (X0 < X1)
 		for (x = X0; x <= X1; x++){
 			curX = x;
-			if (array[curZ][curY][curX].state == '1')
+			if (array[curZ][curY][curX].state == '1'){
 				array[curZ][curY][curX].state = 'X';
-			else if (array[curZ][curY][curX].state == '0')
+				counter += 2;
+			}
+			else if (array[curZ][curY][curX].state == '0'){
 				array[curZ][curY][curX].state = ' ';
+				counter += 1;
+			}
 			curX = X1; // info dla tworzonego wektora decyzyjnego
 		}
 	else
 		for (x = X1; x >= X0; x--){
 			curX = x;
-			if (array[curZ][curY][curX].state == '1')
+			if (array[curZ][curY][curX].state == '1'){
 				array[curZ][curY][curX].state = 'X';
-			else if (array[curZ][curY][curX].state == '0')
+				counter += 2;
+			}
+			else if (array[curZ][curY][curX].state == '0'){
 				array[curZ][curY][curX].state = ' ';
+				counter += 1;
+			}
 			curX = X0;
 		}
 
@@ -56,19 +64,27 @@ void board::moveY(int Y0, int Y1){
 	if (Y0 < Y1)
 		for (y = Y0; y <= Y1; y++){
 			curY = y;
-			if (array[curZ][curY][curX].state == '1')
+			if (array[curZ][curY][curX].state == '1'){
 				array[curZ][curY][curX].state = 'X';
-			else if (array[curZ][curY][curX].state == '0')
+				counter += 2;
+			}
+			else if (array[curZ][curY][curX].state == '0'){
 				array[curZ][curY][curX].state = ' ';
+				counter += 1;
+			}
 			curY = Y1; // info dla tworzonego wektora decyzyjnego
 		}
 	else
 		for (y = Y1; y >= Y0; y--){
 			curY = y;
-			if (array[curZ][curY][curX].state == '1')
+			if (array[curZ][curY][curX].state == '1'){
 				array[curZ][curY][curX].state = 'X';
-			else if (array[curZ][curY][curX].state == '0')
+				counter += 2;
+			}
+			else if (array[curZ][curY][curX].state == '0'){
 				array[curZ][curY][curX].state = ' ';
+				counter += 1;
+			}
 			curY = Y0;
 		};
 }
