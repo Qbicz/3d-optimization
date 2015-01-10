@@ -114,7 +114,7 @@ int VDec::FunctionValue(board Pattern){ // Wartoœæ funkcji celu :)
 	bool prev, flag = true; // true-poziomo, false-pionowo
 	if (Dec[Z][0][0] == Dec[Z][0][1]) prev = false;
 	else prev = true;
-	for (i = 0; i<N - 1; i++){
+	for (i = 0; i<N; i++){
 		if (Dec[Z][0][i] == Dec[Z][0][i + 1]){
 			Pattern.moveY(Dec[Z][1][i], Dec[Z][1][i + 1]);
 			flag = false;
