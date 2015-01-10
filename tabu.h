@@ -10,7 +10,7 @@ public:
 	~tabu();
 	void display();
 	friend class board;
-	void updatetabu(int X0, int X1, int Y0, int Y1);
+	void updatetabu(int X0, int X1, int Y0, int Y1, int Z0);
 };
 
 #endif
