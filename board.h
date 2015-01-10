@@ -9,7 +9,7 @@ public:
 	char state;
 	friend class board;
 	point(){
-		state = '0';
+		state = '1';
 	}
 protected:
 
