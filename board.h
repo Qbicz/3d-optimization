@@ -9,7 +9,7 @@ public:
 	char state;
 	friend class board;
 	point(){
-		state = '1';
+		state = '0';
 	}
 protected:
 
@@ -28,18 +28,13 @@ public:
 	void display();
 	void moveX(int, int);
 	void moveY(int, int);
-	void algoGreedy(int xStart, int yStart, int zStart, VDec &Dec1);
+	void algoGreedy(int xStart, int yStart, int zStart, VDec &);
 	void updateVDec();
 	void traceRouteFromVDec(VDec &Dec);
 	bool stop();
 	void jump(int x, int y, VDec &Dec1);
-	void ZnajdzKierunek(int x, int y, int z, VDec &Dec1);
 protected:
 
 };
-
-
-// tylko wystarczy wiedziec te rzeczy :
-// jak bedzie wygladal interfejs, postac funkcji celu, jakie wykresy rysujemy
 
 #endif // BOARD_H_

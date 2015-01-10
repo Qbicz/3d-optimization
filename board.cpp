@@ -6,13 +6,13 @@ using namespace std;
 
 bool board::stop(){
 	int sizex, sizey, sizez;
-	int counter = 0;
+	int counterek = 0;
 	for (sizez = 0; sizez<Z; sizez++)
 		for (sizey = 0; sizey<Y; sizey++)
 			for (sizex = 0; sizex<X; sizex++)
 				if (array[sizez][sizey][sizex].state == '1')
-					counter++;
-	if (counter == 0) return true;
+					counterek++;
+	if (counterek == 0) return true;
 	else return false;
 }
 
@@ -34,19 +34,27 @@ void board::moveX(int X0, int X1){
 		for (x = X0; x <= X1; x++){
 			curX = x;
 			//std::cout << X0 << ' ' << X1;
-			if (array[curZ][curY][curX].state == '1')
+			if (array[curZ][curY][curX].state == '1'){
 				array[curZ][curY][curX].state = 'X';
-			else if (array[curZ][curY][curX].state == '0')
+				counter += 2;
+			}
+			else if (array[curZ][curY][curX].state == '0'){
 				array[curZ][curY][curX].state = ' ';
+				counter += 1;
+			}
 			curX = X1; // info dla tworzonego wektora decyzyjnego
 		}
 	else
 		for (x = X1; x >= X0; x--){
 			curX = x;
-			if (array[curZ][curY][curX].state == '1')
+			if (array[curZ][curY][curX].state == '1'){
 				array[curZ][curY][curX].state = 'X';
-			else if (array[curZ][curY][curX].state == '0')
+				counter += 2;
+			}
+			else if (array[curZ][curY][curX].state == '0'){
 				array[curZ][curY][curX].state = ' ';
+				counter += 1;
+			}
 			curX = X0;
 		}
 
@@ -57,19 +65,27 @@ void board::moveY(int Y0, int Y1){
 	if (Y0 < Y1)
 		for (y = Y0; y <= Y1; y++){
 			curY = y;
-			if (array[curZ][curY][curX].state == '1')
+			if (array[curZ][curY][curX].state == '1'){
 				array[curZ][curY][curX].state = 'X';
-			else if (array[curZ][curY][curX].state == '0')
+				counter += 2;
+			}
+			else if (array[curZ][curY][curX].state == '0'){
 				array[curZ][curY][curX].state = ' ';
+				counter += 1;
+			}
 			curY = Y1; // info dla tworzonego wektora decyzyjnego
 		}
 	else
 		for (y = Y1; y >= Y0; y--){
 			curY = y;
-			if (array[curZ][curY][curX].state == '1')
+			if (array[curZ][curY][curX].state == '1'){
 				array[curZ][curY][curX].state = 'X';
-			else if (array[curZ][curY][curX].state == '0')
+				counter += 2;
+			}
+			else if (array[curZ][curY][curX].state == '0'){
 				array[curZ][curY][curX].state = ' ';
+				counter += 1;
+			}
 			curY = Y0;
 		};
 }
@@ -83,13 +99,11 @@ board::board(int a, int b, int c){
 	Z = a;
 	int i, j;
 	array = new point**[Z];
-	for (i = 0; i<Z; i++){
+	for (i = 0; i<Z; i++)
+	{
 		array[i] = new point*[Y];
 		for (j = 0; j < Y; j++)
-		{
 			array[i][j] = new point[X];
-			// array[i][j]. = 
-		}
 	}
 }
 
@@ -274,7 +288,7 @@ void board::ZnajdzKierunek(int x, int y, int z, VDec &Dec1)
 			droga_kierunek[3]++;
 		else break;
 	}
-	// Znalezienie najdluzszej drogi z obecnego miejsca - Sortowanie przez wybór
+	// Znalezienie najdluzszej drogi z obecnego miejsca - Sortowanie przez wybÃ³r
 	max = droga_kierunek[0];
 	for (i = 1; i < 4; i++)
 		if (droga_kierunek[i]>max)
