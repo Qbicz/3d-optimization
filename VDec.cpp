@@ -33,6 +33,11 @@ VDec::VDec(int X0, int Y0, int Z0)
 				Dec[i][j][k] = -1; // inicjalizacja
 }
 
+//VDec::VDec(VDec &original) // konstruktor kopiujacy
+//{
+// // dodatkowe max(X,Y) kolumn
+//}
+
 VDec::~VDec()
 {
 	delete[] Dec;
@@ -49,10 +54,15 @@ int VDec::ObliczKoszt()			// obecnie tylko koszt ruchow 'lejacych'
 
 void VDec::Wyswietl()
 {
-	for(int i=0; i<Z; i++)
-		for(int j=0; j<H; j++)
-			for(int k=0; k<N; k++)
-				std::cout << Dec[i][j][k]; // prezentacja
+	for (int i = 0; i < Z; i++)
+	{
+	std::cout << "Poziom " << Z << std::endl;
+	for (int j = 0; j < H; j++)
+	{
+		std::cout << std::endl;
+		for (int k = 0; k < N; k++)
+			std::cout << Dec[i][j][k]; // prezentacja
+	}
 }
 
 void VDec::updateVDec(board &Rozw1)
