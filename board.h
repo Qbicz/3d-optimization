@@ -9,7 +9,7 @@ public:
 	char state;
 	friend class board;
 	point(){
-		state = '0';
+		state = '1';
 	}
 protected:
 
@@ -33,6 +33,7 @@ public:
 	void traceRouteFromVDec(VDec &Dec);
 	bool stop();
 	void jump(int x, int y, VDec &Dec1);
+	void ZnajdzKierunek(int x, int y, int z, VDec &Dec1);
 protected:
 
 };
