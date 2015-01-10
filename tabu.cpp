@@ -15,8 +15,9 @@ void tabu::display(){
 	}
 }
 
-tabu::tabu(int X, int Z){
+tabu::tabu(int X, int Z0){
 	int i, j;
+	Z = Z0;
 	size = X;
 	tabu_array = new int**[Z];
 	for (i = 0; i<Z; i++) tabu_array[i] = new int*[5];
