@@ -29,57 +29,80 @@ void board::display(){
 }
 
 void board::moveX(int X0, int X1){
+	std::cout << "moveX " << std::endl; // -------------- TUUUUUUUUUU ----------
 	int x;
 	if (X0 < X1)
-		for (x = X0; x <= X1; x++){
+		for (x = X0; x <= X1; x++)
+		{
 			curX = x;
 			//std::cout << X0 << ' ' << X1;
-			if (array[curZ][curY][curX].state == '1'){
+			if (array[curZ][curY][curX].state == '1')
+			{
 				array[curZ][curY][curX].state = 'X';
+				// std::cout << "x = " << x << std::endl; // -------------- TUUUUUUUUUU ----------
 				counter += 2;
 			}
-			else if (array[curZ][curY][curX].state == '0'){
+			else if (array[curZ][curY][curX].state == '0')
+			{
 				array[curZ][curY][curX].state = ' ';
 				counter += 1;
 			}
 			curX = X1; // info dla tworzonego wektora decyzyjnego
+			std::cout << "curX = " << curX << std::endl; // -------------- TUUUUUUUUUU ----------
+			std::cout << "curY = " << curY << std::endl; // -------------- TUUUUUUUUUU ----------
+			 this->display(); // --------------------------------------------------------------
 		}
 	else
-		for (x = X1; x >= X0; x--){
+		for (x = X1; x >= X0; x--)
+		{
 			curX = x;
-			if (array[curZ][curY][curX].state == '1'){
+			if (array[curZ][curY][curX].state == '1')
+			{
 				array[curZ][curY][curX].state = 'X';
+				
 				counter += 2;
 			}
-			else if (array[curZ][curY][curX].state == '0'){
+			else if (array[curZ][curY][curX].state == '0')
+			{
 				array[curZ][curY][curX].state = ' ';
 				counter += 1;
 			}
 			curX = X0;
+			std::cout << "curX = " << curX << std::endl; // -------------- TUUUUUUUUUU ----------
+			std::cout << "curY = " << curY << std::endl; // -------------- TUUUUUUUUUU ----------
+			 this->display(); // --------------------------------------------------------------
 		}
 
 }
 
 void board::moveY(int Y0, int Y1){
+	std::cout << "moveY " << std::endl; // -------------- TUUUUUUUUUU ----------
 	int y;
 	if (Y0 < Y1)
 		for (y = Y0; y <= Y1; y++){
 			curY = y;
 			if (array[curZ][curY][curX].state == '1'){
 				array[curZ][curY][curX].state = 'X';
+				
 				counter += 2;
 			}
 			else if (array[curZ][curY][curX].state == '0'){
 				array[curZ][curY][curX].state = ' ';
 				counter += 1;
 			}
-			curY = Y1; // info dla tworzonego wektora decyzyjnego
+			curY = Y1;	// info dla tworzonego wektora decyzyjnego
+						// i info dla kolejnego ruchu AlgoGreedy
+			std::cout << "curX = " << curX << std::endl; // -------------- TUUUUUUUUUU ----------
+			std::cout << "curY = " << curY << std::endl; // -------------- TUUUUUUUUUU ----------
+			 this->display(); // --------------------------------------------------------------
 		}
 	else
-		for (y = Y1; y >= Y0; y--){
+		for (y = Y1; y >= Y0; y--)
+		{
 			curY = y;
 			if (array[curZ][curY][curX].state == '1'){
 				array[curZ][curY][curX].state = 'X';
+				// std::cout << "y = " << y << std::endl; // -------------- TUUUUUUUUUU ----------
 				counter += 2;
 			}
 			else if (array[curZ][curY][curX].state == '0'){
@@ -87,7 +110,10 @@ void board::moveY(int Y0, int Y1){
 				counter += 1;
 			}
 			curY = Y0;
-		};
+			std::cout << "curX = " << curX << std::endl; // -------------- TUUUUUUUUUU ----------
+			std::cout << "curY = " << curY << std::endl; // -------------- TUUUUUUUUUU ----------
+			 this->display(); // --------------------------------------------------------------
+		}
 }
 
 board::board(int a, int b, int c){
@@ -114,41 +140,47 @@ board::~board(){
 void board::algoGreedy(int xStart, int yStart, int zStart, VDec &Dec1) // mozna przyjac xStart = curX
 {
 	int x, y, z;
-	// bool flaga[4];
 
 	x = xStart; // punkt startowy na warstwie
 	y = yStart;
 	z = zStart;
+	std::cout.width(3);
+	std::cout << "algoGreedy(" << x << y << z << ")" << std::endl; // -------------- TUUUUUUUUUU ----------
 	// przy pierwszym wywolaniu i tworzeniu rozw poczatkowego z = 0
 	// prawdopodobnie szybciej bedzie wyciac jedna warstwe macierzy i operowac w 2D, a potem wrzucic ja z powrotem niz w 3D
 
-	for (int x = 0; x < X; x++)                              // chocbym szedl ciemna dolina zla sie nie ulekne
-		for (int y = 0; y < Y; y++)
+	while (!slepa_uliczka)
 		{
-			//for (int f = 0; f < 4; f++) flaga[f] = false; // czyszczenie flag
-			std::cout << "x = " << x  << " " << "y" << y << std::endl;
-			if (x == X-1 && y != 0 && y != Y-1)      // dol
+			x = curX;
+			y = curY;
+			z = curZ;
+			for (int f = 0; f < 4; f++) flag[f] = false; // czyszczenie flag
+			std::cout << "AlgoGreedy: x = " << x  << " " << "y = " << y << "Dziekuje." << std::endl;
+			if (x == X-1 && y != 0 && y != Y-1)      // dol (nowe prawo - flaga prawo)
 				if (// array[curZ][y][x + 1].state == '1' ||
 					array[curZ][y][x - 1].state == '1' ||
 					array[curZ][y + 1][x].state == '1' ||
 					array[curZ][y - 1][x].state == '1')
 				{
+					flag[1] = true;
 					ZnajdzKierunek(x, y, z, Dec1);
 				}
-			if (y == Y - 1 && x != 0 && x != X - 1)     // prawo
+			if (y == Y - 1 && x != 0 && x != X - 1)     // prawo (nowy dol - flaga dol)
 				if (array[curZ][y][x + 1].state == '1' ||
 					array[curZ][y][x - 1].state == '1' ||
 					// array[curZ][y + 1][x].state == '1' ||
 					array[curZ][y - 1][x].state == '1')
 				{
+					flag[0] = true;
 					ZnajdzKierunek(x, y, z, Dec1);
 				}
-			if (x == 0 && y != 0 && y != Y - 1)     // gora
+			if (x == 0 && y != 0 && y != Y - 1)     // gora (nowe lewo - flag lewo)
 				if (array[curZ][y][x + 1].state == '1' ||
 					// array[curZ][y][x - 1].state == '1' ||
 					array[curZ][y + 1][x].state == '1' ||
 					array[curZ][y - 1][x].state == '1')
 				{
+					flag[3] = true;
 					ZnajdzKierunek(x, y, z, Dec1);
 				}
 			if (y == 0 && x != 0 && x != X - 1)     // lewo
@@ -157,14 +189,18 @@ void board::algoGreedy(int xStart, int yStart, int zStart, VDec &Dec1) // mozna 
 					array[curZ][y + 1][x].state == '1' )
 					// array[curZ][y - 1][x].state == '1')
 				{
+					flag[2] = true;
 					ZnajdzKierunek(x, y, z, Dec1);
 				}
+			// KOMBINACJE WARUNKOW
 			if (x == X-1 && y == Y-1)      // dol prawo
 				if (// array[curZ][y][x + 1].state == '1' ||
 					array[curZ][y][x - 1].state == '1' ||
 					// array[curZ][y + 1][x].state == '1' ||
 					array[curZ][y - 1][x].state == '1')
 				{
+					flag[0] = true;
+					flag[1] = true;
 					ZnajdzKierunek(x, y, z, Dec1);
 				}
 			if (x == X-1 && y == 0)      // dol lewo
@@ -173,6 +209,8 @@ void board::algoGreedy(int xStart, int yStart, int zStart, VDec &Dec1) // mozna 
 					array[curZ][y + 1][x].state == '1' )
 					// array[curZ][y - 1][x].state == '1')
 				{
+					flag[1] = true;
+					flag[2] = true;
 					ZnajdzKierunek(x, y, z, Dec1);
 				}
 			if (x == 0 && y == Y-1)     // gora prawo
@@ -181,6 +219,8 @@ void board::algoGreedy(int xStart, int yStart, int zStart, VDec &Dec1) // mozna 
 					// array[curZ][y + 1][x].state == '1' ||
 					array[curZ][y - 1][x].state == '1')
 				{
+					flag[3] = true;
+					flag[0] = true;
 					ZnajdzKierunek(x, y, z, Dec1);
 				}
 			if (x == 0 && y == 0)     // gora lewo
@@ -189,9 +229,12 @@ void board::algoGreedy(int xStart, int yStart, int zStart, VDec &Dec1) // mozna 
 					array[curZ][y + 1][x].state == '1' )
 					// array[curZ][y - 1][x].state == '1')
 				{
+					flag[2] = true;
+					flag[3] = true;
 					ZnajdzKierunek(x, y, z, Dec1);
 				}
-			// flagi zabraniaja ruchow w odpowiednia strone
+
+			// flagi zabraniaja ruchow w odpowiednia strone (i bezsensownych sprawdzen!)
 
 			/*if (array[curZ][y][x + 1].state == '1' || array[curZ][y][x - 1].state == '1' ||
 				array[curZ][y + 1][x].state == '1' || array[curZ][y - 1][x].state == '1')
@@ -258,75 +301,194 @@ void board::ZnajdzKierunek(int x, int y, int z, VDec &Dec1)
 {
 	int i, j, max=0, ruch=0;
 	int droga_kierunek[4] = {0,0,0,0};
+	slepa_uliczka = false;
+	std::cout.width(3);
+	std::cout << "ZnajdzKierunek(" << x << y << z << ")" << std::endl; // -------------- TUUUUUUUUUU ----------
 
+	std::cout << "[ ";
+	for (int t = 0; t < 4;t++)
+		std::cout << flag[t] << ' ';
+	std::cout << "]\n";
 	// --- Znalezienie kierunku ---
-	for (i = x + 1; i < X; i++)
-	{	// sprawdzenie w dol
-		if (array[z][y][i].state == '1')	// jesli 1 to rzeczywiscie nie wypelnione miejsce
-			droga_kierunek[0]++;
-		else break;
-	}
-	//std::cout << "droga_kierunek=" << droga_kierunek[0];
+	if (flag[0]) // czyli y == max
+	{
+		if (flag[1])
+		{ // prawy dolny rog
+			for (i = x - 1; i >= 0; i--)
+			{	// sprawdzenie w gore
+				if (array[z][y][i].state == '1')
+					droga_kierunek[2]++;
+				else break;
+			}
+			for (j = y - 1; j >= 0; j--)
+			{	// sprawdzenie w lewo
+				if (array[z][j][x].state == '1')
+					droga_kierunek[3]++;
+				else break;
+			}	
+		}
+		if (flag[3])
+		{ // lewy dolny rog
+			for (i = x - 1; i >= 0; i--)
+			{	// sprawdzenie w gore
+				if (array[z][y][i].state == '1')
+					droga_kierunek[2]++;
+				else break;
+			}
+			for (j = y + 1; j < X; j++)
+			{	// sprawdzenie w prawo
+				if (array[z][j][x].state == '1')
+					droga_kierunek[1]++;
+				else break;
+			}
+		}
+		else
+		{
+			// dolna krawedz
+			for (j = y + 1; j < X; j++)
+			{	// sprawdzenie w prawo
+				if (array[z][j][x].state == '1')
+					droga_kierunek[1]++;
+				else break;
+			}
 
-	for (j = y + 1; j < X; j++)
-	{	// sprawdzenie w prawo
-		if (array[z][j][x].state == '1')
-			droga_kierunek[1]++;
-		else break;
-	}
+			for (i = x - 1; i >= 0; i--)
+			{	// sprawdzenie w gore
+				if (array[z][y][i].state == '1')
+					droga_kierunek[2]++;
+				else break;
+			}
 
-	for (i = x - 1; i >= 0; i--)
-	{	// sprawdzenie w gore
-		if (array[z][y][i].state == '1')
-			droga_kierunek[2]++;
-		else break;
+			for (j = y - 1; j >= 0; j--)
+			{	// sprawdzenie w lewo
+				if (array[z][j][x].state == '1')
+					droga_kierunek[3]++;
+				else break;
+			}
+		}
 	}
+	else if (flag[2]) // y == 0
+	{
+		if (flag[1])
+		{ // prawy gorny rog
 
-	for (j = y - 1; j >= 0; j--)
-	{	// sprawdzenie w lewo
-		if (array[z][j][x].state == '1')
-			droga_kierunek[3]++;
-		else break;
+			for (i = x + 1; i < X; i++)
+			{	// sprawdzenie w dol
+				if (array[z][y][i].state == '1')	// jesli 1 to rzeczywiscie nie wypelnione miejsce
+					droga_kierunek[0]++;
+				else break;
+			}
+
+			for (j = y - 1; j >= 0; j--)
+			{	// sprawdzenie w lewo
+				if (array[z][j][x].state == '1')
+					droga_kierunek[3]++;
+				else break;
+			}
+		}
+		if (flag[3])
+		{ //lewy gorny rog
+			for (j = y + 1; j < X; j++)
+			{	// sprawdzenie w prawo
+				if (array[z][j][x].state == '1')
+					droga_kierunek[1]++;
+				else break;
+			}
+			for (i = x + 1; i < X; i++)
+			{	// sprawdzenie w dol
+				if (array[z][y][i].state == '1')	// jesli 1 to rzeczywiscie nie wypelnione miejsce
+					droga_kierunek[0]++;
+				else break;
+			}
+		}
+		else
+		{
+			// gorna krawedz
+			for (i = x + 1; i < X; i++)
+			{	// sprawdzenie w dol
+				if (array[z][y][i].state == '1')	// jesli 1 to rzeczywiscie nie wypelnione miejsce
+					droga_kierunek[0]++;
+				else break;
+			}
+			for (j = y + 1; j < X; j++)
+			{	// sprawdzenie w prawo
+				if (array[z][j][x].state == '1')
+					droga_kierunek[1]++;
+				else break;
+			}
+			for (j = y - 1; j >= 0; j--)
+			{	// sprawdzenie w lewo
+				if (array[z][j][x].state == '1')
+					droga_kierunek[3]++;
+				else break;
+			}
+		}
 	}
+	else if (flag[1]) // x == max
+	{
+		for (j = y - 1; j >= 0; j--)
+		{	// sprawdzenie w lewo
+			if (array[z][j][x].state == '1')
+				droga_kierunek[3]++;
+			else break;
+		}
+	}
+	else if (flag[3]) // x == 0
+	{
+		for (j = y + 1; j < X; j++)
+		{	// sprawdzenie w prawo
+			if (array[z][j][x].state == '1')
+				droga_kierunek[1]++;
+			else break;
+		}
+	}
+	
 	// Znalezienie najdluzszej drogi z obecnego miejsca - Sortowanie przez wybór
 	max = droga_kierunek[0];
 	for (i = 1; i < 4; i++)
 		if (droga_kierunek[i]>max)
 			max = droga_kierunek[i];
 	for (i = 0; i < 4; i++) // znajdz to maksimum
+	{
 		if (max == droga_kierunek[i])
 		{
 			ruch = i;
+		}
+	}
+	std::cout << "ruch = " << ruch << " max = " << max << std::endl; // -------------------------------------
+	// wykonaj ruch w wybranym kierunku
+	if (max)
+	{
+		switch (ruch)
+		{
+		case 0:
+			//std::cout << "x="<< x << ' ' << max;
+			moveY(y, y + max);
+			break;
+		case 1:
+			//std::cout << "x=" << x << ' ' << max;
+			moveX(x, x + max);
+			break;
+		case 2:
+			//std::cout << "x=" << x << ' ' << max;
+			moveY(y, y - max);
+			break;
+		case 3:
+			//std::cout << "x=" << x << ' ' << max;
+			moveX(x, x - max);
+			break;
+		default:
 			break;
 		}
-	// wykonaj ruch w wybranym kierunku
-	switch (ruch)
-	{
-	case 0:
-		//std::cout << "x="<< x << ' ' << max;
-		moveX(x, x + max);
-		break;
-	case 1:
-		//std::cout << "x=" << x << ' ' << max;
-		moveY(y, y + max);
-		break;
-	case 2:
-		//std::cout << "x=" << x << ' ' << max;
-		moveX(x, x - max);
-		break;
-	case 3:
-		//std::cout << "x=" << x << ' ' << max;
-		moveY(y, y - max);
-		break;
-	default:
-		break;
 	}
-
+	else
+		slepa_uliczka = true;
 
 	// Dec1.updateVDec(*this);	// DONE::zamienic na przeslanie przez referencje
 
-	curX = i;
-	curY = j; //ostatnie polozenie - po wykonanym ruchu
+	// curX = i;
+	// curY = j; //ostatnie polozenie - po wykonanym ruchu
+	std::cout << "Po wykonanym ruchu: curX = " << curX << " curY = " << curY << std::endl; // -------------------------------------
 	for (i = 0; i < 4; i++)
 		droga_kierunek[i] = 0;
 }
